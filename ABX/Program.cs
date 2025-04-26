@@ -26,7 +26,9 @@ class Program
         packets.Sort((a, b) => a.PacketSequence.CompareTo(b.PacketSequence));
         await JsonToFile(packets);
 
-        Console.WriteLine("Json File Saved Successfully! on 'D:\\PublishABX\\Result_Json\\' path");
+        string Currentdic = Directory.GetCurrentDirectory();
+        string root = Path.GetPathRoot(Currentdic) + "\\Result_Json\\";
+        Console.WriteLine("Json File Saved Successfully! on "+ root + " path");
         Console.ReadKey();
         Console.ReadKey();
 
@@ -138,7 +140,14 @@ class Program
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = JsonSerializer.Serialize(packets, options);
 
-        await File.WriteAllTextAsync(@"D:\PublishABX\Result_Json\Result_" + DateTime.Now.ToString("dd.MM.yyyy")+".json", jsonString);
+        string Currentdic = Directory.GetCurrentDirectory();
+        string root = Path.GetPathRoot(Currentdic) + "\\Result_Json";
+        if (!Directory.Exists(root))
+        {
+            Directory.CreateDirectory(root);
+        }
+
+        await File.WriteAllTextAsync(root + "\\Result_" + DateTime.Now.ToString("dd.MM.yyyy")+".json", jsonString);
     }
 }
 
